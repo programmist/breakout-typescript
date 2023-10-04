@@ -9,6 +9,7 @@ A Vanilla TS Object-Oriented implementation of the classic Breakout game.
 - Execute `npm install` to install vite and other deps
 - Execute `npm run start` to open the game at [http://localhost:5500/](http://localhost:5500/)
 - Refresh browser tab to restart game (game controls soon)
+- Use left and right arrow keys to move paddle
 
 
 ## Feature TODO
