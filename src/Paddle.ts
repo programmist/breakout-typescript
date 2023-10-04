@@ -1,5 +1,8 @@
 import Entity from "./Entity";
 
+type PaddleDirection = -1 | 1;
+type PaddleSpeed = 1 | 2 | 3 | 4 | 5;
+
 class Paddle extends Entity {
   private x: number;
   private y: number;
@@ -14,8 +17,8 @@ class Paddle extends Entity {
     this.y = canvas.height - this.height;
   }
 
-  update() {
-    this.x += 1;
+  update(direction: PaddleDirection, speed: PaddleSpeed) {
+    this.x = this.x + speed * direction;
   }
 
   draw() {
