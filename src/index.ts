@@ -10,7 +10,7 @@ const paddle = new Paddle(canvas, 75, 10);
 const controller = new Controller();
 
 function update() {
-  ball.update();
+  ball.update(paddle);
   if (controller.active) {
     paddle.update(controller.direction, PADDLE_SPEED);
   }

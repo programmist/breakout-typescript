@@ -1,4 +1,5 @@
 import Entity from "./Entity";
+import Paddle from "./Paddle";
 
 class Ball extends Entity {
   constructor(
@@ -11,7 +12,7 @@ class Ball extends Entity {
     super(canvas);
   }
 
-  checkCollisions() {
+  private updateOnCollision(paddle: Paddle) {
     const {
       x,
       y,
@@ -22,6 +23,11 @@ class Ball extends Entity {
 
     if (y + dy < radius) {
       this.velocity[0] = -this.velocity[0];
+    } else if (y + dy > height - paddle.height) {
+      // check for paddle collision
+      if (x > paddle.x && x < paddle.x + paddle.width) {
+        this.velocity[0] = -this.velocity[0];
+      }
     }
 
     if (x + dx < radius || x + dx > width - radius) {
@@ -33,8 +39,8 @@ class Ball extends Entity {
     return this.y > this.canvas.height;
   }
 
-  update() {
-    this.checkCollisions();
+  update(paddle: Paddle) {
+    this.updateOnCollision(paddle);
     const [dy, dx] = this.velocity;
     this.y += dy;
     this.x += dx;
