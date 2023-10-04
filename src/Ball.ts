@@ -1,19 +1,15 @@
-export class CanvasInfo {
-  constructor(
-    public height: number,
-    public width: number,
-    public context: CanvasRenderingContext2D
-  ) {}
-}
+import Entity from "./Entity";
 
-class Ball {
+class Ball extends Entity {
   constructor(
-    public x: number,
-    public y: number,
+    canvas: HTMLCanvasElement,
+    protected x: number,
+    protected y: number,
     public radius: number,
-    public velocity: [dy: number, dx: number],
-    private canvas: CanvasInfo
-  ) {}
+    public velocity: [dy: number, dx: number]
+  ) {
+    super(canvas);
+  }
 
   checkCollisions() {
     const {
@@ -41,13 +37,11 @@ class Ball {
   }
 
   draw() {
-    const { context } = this.canvas;
-
-    context.beginPath();
-    context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    context.fillStyle = "#0095DD";
-    context.fill();
-    context.closePath();
+    this.context.beginPath();
+    this.context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    this.context.fillStyle = "#0095DD";
+    this.context.fill();
+    this.context.closePath();
   }
 
   setVelocity(velocity: [number, number]) {
