@@ -1,16 +1,19 @@
 import Ball from "./Ball";
+import Bricks from "./Bricks";
 import Controller from "./Controller";
 import { canvas, context } from "./GameCanvas";
 import Paddle from "./Paddle";
 
 let GAME_OVER = false;
 const PADDLE_SPEED = 3;
+const bricks = new Bricks(canvas);
 const ball = new Ball(canvas, 50, 50, 10, [2, 2]);
 const paddle = new Paddle(canvas, 75, 10);
 const controller = new Controller();
 
 function update() {
   ball.update(paddle);
+  bricks.update();
   if (controller.active) {
     paddle.update(controller.direction, PADDLE_SPEED);
   }
@@ -24,6 +27,7 @@ function draw(tFrame?: DOMHighResTimeStamp) {
     context.clearRect(0, 0, canvas.width, canvas.height);
     ball.draw();
     paddle.draw();
+    bricks.draw();
   }
 }
 
@@ -53,7 +57,7 @@ document.addEventListener("keyup", (event: KeyboardEvent) => {
       break;
   }
 });
-
+// TODO: draw with tFrame for smoother animation
 function main(tFrame?: DOMHighResTimeStamp) {
   if (!GAME_OVER) {
     requestAnimationFrame(main);
