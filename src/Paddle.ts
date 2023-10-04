@@ -18,7 +18,10 @@ class Paddle extends Entity {
   }
 
   update(direction: PaddleDirection, speed: PaddleSpeed) {
-    this.x = this.x + speed * direction;
+    this.x = Math.max(
+      Math.min(this.x + speed * direction, this.canvas.width - this.width),
+      0
+    );
   }
 
   draw() {
