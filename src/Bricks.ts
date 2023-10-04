@@ -1,9 +1,12 @@
 import Ball from "./Ball";
 import Entity from "./Entity";
 
-interface Brick {
+export interface Brick {
   x: number;
   y: number;
+  width: number;
+  height: number;
+  live: boolean;
 }
 
 class Bricks extends Entity {
@@ -21,6 +24,19 @@ class Bricks extends Entity {
     this.liveBricks = this.createBricks();
   }
 
+  get bricks(): readonly Brick[][] {
+    return this.liveBricks;
+  }
+
+  get count() {
+    return this.liveBricks.reduce(
+      (count, row) =>
+        count +
+        row.reduce((rowCount, brick) => rowCount + (brick.live ? 1 : 0), 0),
+      0
+    );
+  }
+
   createBricks() {
     const [brickWidth, brickHeight] = this.brickDimensions;
     const bricks: Brick[][] = [[], [], []];
@@ -28,7 +44,13 @@ class Bricks extends Entity {
       for (let row = 0; row < this.rows; row++) {
         const x = 30 + (brickWidth + this.brickpadding) * col;
         const y = 30 + (brickHeight + this.brickpadding) * row;
-        bricks[row][col] = { x, y };
+        bricks[row][col] = {
+          x,
+          y,
+          width: brickWidth,
+          height: brickHeight,
+          live: true,
+        };
       }
     }
     return bricks;
@@ -36,12 +58,12 @@ class Bricks extends Entity {
 
   update() {
     // FIXME: test missing brick
-    delete this.liveBricks[2][4];
   }
 
-  drawBrick(brick: Brick, width: number, height: number) {
+  drawBrick(brick: Brick) {
+    const { x, y, width, height } = brick;
     this.context.beginPath();
-    this.context.rect(brick.x, brick.y, width, height);
+    this.context.rect(x, y, width, height);
     this.context.fillStyle = "#0095DD";
     this.context.fill();
     this.context.closePath();
@@ -53,8 +75,8 @@ class Bricks extends Entity {
     for (let col = 0; col < this.cols; col++) {
       for (let row = 0; row < this.rows; row++) {
         const brick = this.liveBricks[row][col];
-        if (brick) {
-          this.drawBrick(brick, brickWidth, brickHeight);
+        if (brick.live) {
+          this.drawBrick(brick);
         }
       }
     }
