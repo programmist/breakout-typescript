@@ -20,13 +20,17 @@ class Ball extends Entity {
       canvas: { width, height },
     } = this;
 
-    if (y + dy < radius || y + dy > height - radius) {
+    if (y + dy < radius) {
       this.velocity[0] = -this.velocity[0];
     }
 
     if (x + dx < radius || x + dx > width - radius) {
       this.velocity[1] = -this.velocity[1];
     }
+  }
+
+  get isOutOfBounds() {
+    return this.y > this.canvas.height;
   }
 
   update() {

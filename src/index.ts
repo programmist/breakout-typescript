@@ -3,6 +3,7 @@ import Controller from "./Controller";
 import { canvas, context } from "./GameCanvas";
 import Paddle from "./Paddle";
 
+let GAME_OVER = false;
 const PADDLE_SPEED = 3;
 const ball = new Ball(canvas, 50, 50, 10, [2, 2]);
 const paddle = new Paddle(canvas, 75, 10);
@@ -13,6 +14,9 @@ function update() {
   if (controller.active) {
     paddle.update(controller.direction, PADDLE_SPEED);
   }
+  if (ball.isOutOfBounds) {
+    GAME_OVER = true;
+  }
 }
 
 function draw(tFrame?: DOMHighResTimeStamp) {
@@ -21,6 +25,12 @@ function draw(tFrame?: DOMHighResTimeStamp) {
     ball.draw();
     paddle.draw();
   }
+}
+
+function gameOverMessage() {
+  context.font = "60px Courier New";
+  context.fillStyle = "#F00";
+  context.fillText("GAME OVER", canvas.width / 6, canvas.height / 2);
 }
 
 document.addEventListener("keydown", (event: KeyboardEvent) => {
@@ -45,9 +55,13 @@ document.addEventListener("keyup", (event: KeyboardEvent) => {
 });
 
 function main(tFrame?: DOMHighResTimeStamp) {
-  requestAnimationFrame(main);
-  draw(tFrame);
-  update();
+  if (!GAME_OVER) {
+    requestAnimationFrame(main);
+    draw(tFrame);
+    update();
+  } else {
+    gameOverMessage();
+  }
 }
 
 main();
