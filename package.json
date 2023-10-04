@@ -11,6 +11,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "parcel": "^2.9.3"
+    "vite": "^4.4.10"
   }
 }
